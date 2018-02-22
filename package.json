@@ -1,5 +1,5 @@
 {
-  "name": "websockets-playlist",
+  "name": "boilerplate",
   "version": "1.0.0",
   "description": "A chat app using WebSockets",
   "main": "index.js",
@@ -8,10 +8,7 @@
   },
   "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/iamshaunjp/websockets-playlist/issues"
-  },
-    "dependencies": {
+  "dependencies": {
     "express": "^4.15.2",
     "http": "0.0.0",
     "socket.io": "^1.7.3"
