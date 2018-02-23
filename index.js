@@ -1,20 +1,27 @@
 var express = require('express');
 var app = express();
 var server  = require('http').Server(app);
+require('dotenv').config();
+var redis = require('socket.io-redis');
+
+server.listen(process.env.PORT || 4000, function(){
+    console.log('listening for requests on port:'+ process.env.PORT);
+});
 
 var io = require('socket.io')(server);
 
-server.listen(4000, function(){
-    console.log('listening for requests on port 4000,');
-});
-
+//Sending messages from the outside-world
+var io_redis = io.adapter(redis({
+    host: '127.0.0.1',
+    port: 6379
+}));
 
 
 // Static files
 app.use(express.static('public'));
 
 // Custom namespaces
-var chat = io
+var chat = io_redis
   .of('/chat')
   .on('connection', (socket) => {
 
@@ -39,7 +46,7 @@ var chat = io
 });
 
 
-var typing = io
+var typing = io_redis
   .of('/typing')
   .on('connection', (socket) => {
 

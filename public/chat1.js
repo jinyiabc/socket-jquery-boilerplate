@@ -1,8 +1,8 @@
 $(function () {
 
 // Connected to custom namespace.
-  var chat = io('http://localhost:4000/chat');
-  var typing = io('http://localhost:4000/typing');
+  var chat = io('/chat');
+  var typing = io('/typing');
 
 
   $('#message').keypress(function(){
