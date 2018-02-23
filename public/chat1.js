@@ -1,25 +1,43 @@
 $(function () {
-  var socket = io('http://localhost:4000');
+
+// Connected to custom namespace.
+  var chat = io('http://localhost:4000/chat');
+  var typing = io('http://localhost:4000/typing');
+
+
   $('#message').keypress(function(){
-    socket.emit('typing', handle.value);
+    typing.emit('typing', handle.value);
   });
   $('#send').click(function(){
-    socket.emit('chat', {
+    // Now that we are connected let's send our test call with callback
+    chat.emit('chat', {
         message: message.value,
         handle: handle.value
+    }, function(response){
+      console.log(response);
     });
     message.value = "";
   })
 
 
   // Listen for events
-  socket.on('chat', function(data){
+  chat.on('chat', function(data){
       feedback.innerHTML = '';
       output.innerHTML += '<p><strong>' + data.handle + ': </strong>' + data.message + '</p>';
   });
 
-  socket.on('typing', function(data){
+  typing.on('typing', function(data){
       feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
   });
+
+
+  // // Sandbox
+  // socket.on('news',function(data){
+  //   console.log(data);
+  //   socket.emit('my other event',{my:'data'});
+  // });
+
+
+
 
 });
