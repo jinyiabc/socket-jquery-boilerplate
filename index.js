@@ -1,3 +1,4 @@
+var debug = require('debug')('io-redis');
 var express = require('express');
 var app = express();
 var server  = require('http').Server(app);
@@ -5,7 +6,7 @@ require('dotenv').config();
 var redis = require('socket.io-redis');
 
 server.listen(process.env.PORT || 4000, function(){
-    console.log('listening for requests on port:'+ process.env.PORT);
+    debug('listening for requests on port:'+ process.env.PORT);
 });
 
 var io = require('socket.io')(server);
@@ -25,7 +26,7 @@ var chat = io_redis
   .of('/chat')
   .on('connection', (socket) => {
 
-    console.log('made socket connection', socket.id);
+    debug('made socket connection', socket.id);
     socket.on('disconnect', function(){
       console.log('user disconnected');
     });
@@ -59,3 +60,13 @@ var typing = io_redis
     });
 
 });
+
+var time = io_redis
+    .on('connection',(socket) => {
+
+      socket.on('ack', function (data,cb) {
+        responseData = 'Acknowledgement:' + typeof(data) + data;
+       cb(responseData);
+      });
+
+    });

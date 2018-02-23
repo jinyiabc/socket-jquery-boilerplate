@@ -3,6 +3,7 @@ $(function () {
 // Connected to custom namespace.
   var chat = io('/chat');
   var typing = io('/typing');
+  var time = io();
 
 
   $('#message').keypress(function(){
@@ -30,7 +31,13 @@ $(function () {
       feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
   });
 
-
+  time.on('time', function (data) {
+    // console.log('time', typeof(data), data);
+    $('#times').append($('<li>').text(data));
+    time.emit('ack', data ,function(response){
+      console.log(response);
+    });
+  });
   // // Sandbox
   // socket.on('news',function(data){
   //   console.log(data);
